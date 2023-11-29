@@ -17,3 +17,5 @@ COPY . .
 EXPOSE 3001
 
 CMD [ "node", "index.js" ]
+
+#Logrado el despliegue del BACK
