@@ -2,7 +2,7 @@
 FROM node:18
 
 # Create app directory
-WORKDIR /src/index
+WORKDIR /index
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
