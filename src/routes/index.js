@@ -13,6 +13,7 @@ router.use('/product', routerProduct);
 router.use('/admin', routerAdmin);
 router.use('/review', routerReview);
 router.use('/purchase', routerPurchase);
+router.use("/",(req, res)=> res.send("boludo"))
 
 
 module.exports = router;
