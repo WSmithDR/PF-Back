@@ -8,6 +8,7 @@ const verifyToken = require("../middlewares/Tokens/verifyTokens");
 
 //Controllers
 const signUp = require('../controllers/User/signUp');
+const authenticateWithGoogle = require("../controllers/User/auth");
 
 // REFRESH TOKENS
 router.post("/refresh", refreshTokens, (req, res) => {
@@ -40,6 +41,17 @@ router.post("/signup", async (req, res) => {
     console.log(error.message);
 
     res.status(404).json({ error: error.message });
+  };
+});
+
+router.post("/auth", async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const response = await authenticateWithGoogle(token);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   };
 });
 
