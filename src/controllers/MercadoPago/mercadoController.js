@@ -1,37 +1,39 @@
 require("dotenv").config();
 const { MercadoPagoConfig, Preference } = require("mercadopago");
-const { ACCESS_TOKEN } = process.env;
+const { Product } = require("../../models/Product"); 
+const { User } = require("../../models/User"); 
 
-const client = new MercadoPagoConfig({
-  accessToken: ACCESS_TOKEN,
-});
+require("../../db"); 
+
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const client = new MercadoPagoConfig({ accessToken: ACCESS_TOKEN });
 const payment = new Preference(client);
+
 const placeOrder = async (req, res) => {
   try {
-   
+    
     const cart = req.body;
     console.log(cart);
 
     let items = cart.map((product) => ({
-      title: product.title,
+      title: product.name,
       quantity: product.quantity,
-      unit_price: product.unit_price,
-      currency_id: product.currency_id,
-      image: product.image,
+      unit_price: product.price,
+      currency_id: product.currency, 
+      image: product.img,
       description: product.description,
     }));
 
     let preference = {
-      body: {
-        items: items,
-        back_urls: {
-          failure: "http://localhost:3001",
-          pending: "http://localhost:3001/purchase/pending",
-          success: "http://localhost:3001",
-        },
-        auto_return: "approved",
+      items: items,
+      back_urls: {
+        failure: "http://localhost:3001",
+        pending: "http://localhost:3001",
+        success: "http://localhost:3001",
       },
+      auto_return: "approved",
     };
+
     const response = await payment.create(preference);
     res.status(200).send(response);
     console.log(response);
@@ -42,7 +44,8 @@ const placeOrder = async (req, res) => {
 
 const successfulPurchase = async (req, res) => {
   try {
-    res.status(200).send("Compra realizada con exito");
+ 
+    res.status(200).send("Purchase completed successfully");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

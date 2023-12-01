@@ -2,8 +2,7 @@ const { Router } = require("express");
 const router = Router();
 
 //Middlewares
-const upload = require('../middlewares/Multer/upload');
-const uploadImage = require('../middlewares/Cloudinary/uploadImage');
+const upload = require('../middlewares/Multer/uploadImage');
 
 //Controllers
 const postProduct = require('../controllers/Product/postProduct');
@@ -19,13 +18,10 @@ const getAllProductsDeleted = require("../controllers/Product/getAllProductsDele
 router.post("/", upload, async (req, res) => {
   try {
     const { name, brand, sale, category, description, price, quantity } = req.body;
-    let img = req.file && req.file.buffer;
+    const img = req.file && req.file.path;
 
     console.log(req.body);
-    console.log(req.file);
-
-    const result = await uploadImage(img);
-    img = result.secure_url;
+    console.log(req.img);
 
     const newProduct = await postProduct({ name, brand, sale, category, img, description, price, quantity });
 
