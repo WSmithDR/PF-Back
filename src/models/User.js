@@ -6,32 +6,40 @@ const userSchema = new Schema(
     name: {
       type: String,
       unique: false,
-      require: true
+      required: true
     },
     phoneNumber: {
       type: Number,
-      unique: true,
-      require: true
+      default: function() {
+        return Math.floor(10000 + Math.random() * 90000);
+      },
     },
     email: {
       type: String,
       unique: true,
-      require: true
+      required: true
     },
     password: {
       type: String,
       unique: false,
-      require: true
+      required: false
     },
     address: {
       type: String,
       unique: false,
-      require: true
+      required: false
     },
     deleted: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    verify: {
+      type: Boolean,
+      default: false
+    },
+    img: {
+      type: String
+    }
   },
   {
     timestamps: false,

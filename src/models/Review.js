@@ -5,18 +5,18 @@ const reviewsSchema = new Schema(
     comment: {
       type: String,
       unique: false,
-      require: true,
+      required: true,
     },
     userId: [{
       type: Schema.Types.ObjectId,
       ref: 'User',
-      require: false,
+      required: false,
       unique: false
     }],
     productId: [{
       type: Schema.Types.ObjectId,
       ref: 'Product',
-      require: false,
+      required: false,
       unique: false
     }]
   },

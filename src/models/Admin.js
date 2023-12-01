@@ -9,17 +9,17 @@ const adminSchema = new Schema(
     store: {
       type: String,
       unique: true,
-      require: true
+      required: true
     },
     description: {
       type: String,
       unique: false,
-      require: true
+      required: true
     },
     contact: {
       type: String,
       unique: true,
-      require: true
+      required: true
     },
     deleted: {
       type: Boolean,

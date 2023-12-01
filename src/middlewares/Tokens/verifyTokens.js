@@ -1,34 +1,34 @@
 const jwt = require("jsonwebtoken");
 
-const refreshTokens = (req, res, next) => {
-  const refreshToken = req.headers['x-refresh-token'];
-  
-  if (!refreshToken) {
-    throw new Error("No Refresh token provider!");
+const verifyToken = (req, res, next) => {
+  const token = req.headers['x-access-token'];
+
+  if (!token) {
+    return res.status(401).json({
+      auth: false,
+      message: "No token provider!",
+    });
   };
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+    const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
 
-    const userId = decoded.id;
-
-    const newAccessToken = jwt.sign({ id: userId }, process.env.ACCESS_SECRET, {
-      expiresIn: process.env.ACCESS_EXPIRES,
-    });
-
-    const newRefreshToken = jwt.sign({ id: userId }, process.env.REFRESH_SECRET, {
-      expiresIn: process.env.REFRESH_EXPIRES,
-    });
-
-    res.locals.newAccessToken = newAccessToken;
-    res.locals.newRefreshToken = newRefreshToken;
-
+    req.userId = decoded.id;
+    
     next();
   } catch (error) {
-    console.log(error);
-
-    throw new Error("Refresh token expired or invalid.", error.message);
-  };
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        auth: false,
+        message: "Token expired",
+      });
+    } else {
+      return res.status(401).json({
+        auth: false,
+        message: "Internal server error",
+      });
+    }
+  }
 };
 
-module.exports = refreshTokens;
+module.exports = verifyToken;
