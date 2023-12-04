@@ -19,7 +19,7 @@ const signUp = async ({ name, email, password, phoneNumber, address, img }) => {
       password,
       phoneNumber,
       address,
-      img: img ? img : 'https://img2.freepng.es/20180714/ro/kisspng-computer-icons-user-membership-vector-5b498fc76f2a07.4607730515315475914553.jpg'
+      img: img || 'https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png'
     });
 
     user.password = await user.encryptPassword(user.password);

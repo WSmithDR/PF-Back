@@ -17,7 +17,11 @@ const login = async (email, password) => {
 
     if (!validPassword) {
       throw new Error("Contraseña incorrecta");
-    }
+    };
+
+    if (!user.password) {
+      throw new Error("Necesitas una contraseña");
+    };
 
     const { accessToken, refreshToken } = signTokens(user._id);
 
@@ -31,7 +35,7 @@ const login = async (email, password) => {
 
   } catch (error) {
     console.error('Error en login:', error.message);
-    throw new Error({ error: error.message });
+    throw new Error(error.message);
   }
 };
 

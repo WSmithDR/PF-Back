@@ -13,6 +13,8 @@ const getAllProducts = async (req, res, next) => {
     whereConditions.category = new RegExp(category, 'i');
   }
 
+  whereConditions.deleted = false;
+
   if (sale === "1") {
     console.log("Filtrando por sale con descuento");
     whereConditions.sales = {
