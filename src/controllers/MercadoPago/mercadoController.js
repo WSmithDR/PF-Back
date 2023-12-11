@@ -52,9 +52,9 @@ const placeOrder = async (req, res) => {
         external_reference: {userId: userId, productIds: productIds},
         items: items,
         back_urls: {
-          failure: "http://localhost:3001",
-          pending: "http://localhost:3001/purchase/pending",
-          success: "http://localhost:3001/purchase/succes",
+          failure: "https://pfback1-q5aoyanf.b4a.run",
+          pending: "https://pfback1-q5aoyanf.b4a.run/purchase/pending",
+          success: "https://pfback1-q5aoyanf.b4a.run/purchase/succes",
         },
         auto_return: "approved",
       },
@@ -102,7 +102,7 @@ const successfulPurchase = async (req, res) => {
       text: "Te invitamos a seguir comprando",
     });
 
-    res.redirect('http://localhost:5173/home');
+    res.redirect('https://master--elictronic.netlify.app/home');
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
