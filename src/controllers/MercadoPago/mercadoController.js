@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const User = require("../../models/User");
 const Product = require("../../models/Product");
+const Purchases = require('../../models/Purchases');
 
 const config = {
   host: 'smtp.gmail.com',
@@ -75,16 +76,24 @@ const successfulPurchase = async (req, res) => {
     console.log(datos);
 
     const userId = datos.userId;
+    const productId = datos.productIds;
     const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: datos.productsId }); 
+    const product = await Product.findOne({ _id: productId}); 
     if (!user) {
       throw new Error('User not found.');
     }
 
     const userEmail = user.email;
 
-    await Product.findByIdAndUpdate(datos.productsId, { $inc: { quantity: -1 } });
+    await Product.findByIdAndUpdate(productId, { $inc: { quantity: -1 } });
     console.log(userEmail);
+
+    const newPurchase = new Purchases({
+      userId: userId,
+      productId: productId,
+    });
+    await newPurchase.save();
+    await Purchases.updatePurchaseInfo(newPurchase._id, userId, productId);
 
     await transporter.sendMail({
       from: process.env.EMAIL,
@@ -93,7 +102,7 @@ const successfulPurchase = async (req, res) => {
       text: "Te invitamos a seguir comprando",
     });
 
-    res.redirect('http://localhost:5173/');
+    res.redirect('http://localhost:5173/home');
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

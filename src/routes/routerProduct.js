@@ -4,6 +4,7 @@ const router = Router();
 //Middlewares
 const upload = require('../middlewares/Multer/upload');
 const uploadImage = require('../middlewares/Cloudinary/uploadImage');
+const verifyToken = require("../middlewares/Tokens/verifyTokens")
 
 //Controllers
 const postProduct = require('../controllers/Product/postProduct');
@@ -13,21 +14,20 @@ const getProductById = require("../controllers/Product/getProductById");
 const putProduct = require("../controllers/Product/putProduct");
 const deleteProduct = require("../controllers/Product/deleteProduct");
 const getAllProductsDeleted = require("../controllers/Product/getAllProductsDeleted");
-
+const restoreProduct = require("../controllers/Product/restoreProduct")
+const getUsersAndProducts = require("../controllers/Product/getUsers&Products");
 
 //POST
-router.post("/", upload, async (req, res) => {
+router.post("/", upload, verifyToken, async (req, res) => {
   try {
     const { name, brand, sale, category, description, price, quantity } = req.body;
     let img = req.file && req.file.buffer;
-
-    console.log(req.body);
-    console.log(req.file);
+    const userId = req.userId;
 
     const result = await uploadImage(img);
     img = result.secure_url;
 
-    const newProduct = await postProduct({ name, brand, sale, category, img, description, price, quantity });
+    const newProduct = await postProduct({ name, brand, sale, category, img, description, price, quantity, userId });
 
     return res.status(200).json(newProduct);
   } catch (error) {
@@ -40,6 +40,11 @@ router.post("/", upload, async (req, res) => {
 
 //GET
 router.get("/", getAllProducts, (req, res) => {
+  
+  return res.status(200).json(res.paginatedResults);
+});
+
+router.get("/deleted", getAllProductsDeleted, (req, res) => {
   
   return res.status(200).json(res.paginatedResults);
 });
@@ -60,6 +65,16 @@ router.get("/name", async (req, res) => {
   };
 });
 
+router.get("/users&products", async (req, res) => {
+  try {
+    const usersAndProducts = await getUsersAndProducts();
+
+    return res.status(200).json(usersAndProducts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  };
+});
+
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   
@@ -72,15 +87,11 @@ router.get("/:id", async (req, res) => {
   };
 });
 
-router.get("/deleted", async (req, res) => {
-  try {
-    const results = await getAllProductsDeleted();
-    
-    return res.status(200).json(results);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  };
+router.get("/deleted", getAllProductsDeleted, (req, res) => {
+
+  return res.status(200).json(res.paginatedResults);
 });
+
 
 //PUT
 router.put("/:id", async (req, res) => {
@@ -101,6 +112,18 @@ router.put("/delete/:id", async (req, res) => {
 
   try {
     const product = await deleteProduct(id);
+
+    return res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  };
+});
+
+router.put("/restore/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await restoreProduct(id);
 
     return res.status(200).json(product);
   } catch (error) {

@@ -15,7 +15,6 @@ const productSchema = new Schema({
   },
   category: {
     type: String,
-    required: true,
   },
   img: {
     type: String,
@@ -36,6 +35,12 @@ const productSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  createdBy: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: false,
+    unique: false
+  }],
 },
 {
   timestamps: true,
@@ -45,5 +50,10 @@ productSchema.methods.softDelete = function() {
   this.deleted = true;
   return this.save();
 };
+
+productSchema.methods.restore = function() {
+  this.deleted = false;
+  return this.save();
+}
 
 module.exports = model("Product", productSchema);

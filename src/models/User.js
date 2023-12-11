@@ -8,11 +8,15 @@ const userSchema = new Schema(
       unique: false,
       required: true
     },
+    number: {
+      type: Number,
+      unique: false
+    },
     phoneNumber: {
       type: Number,
-      default: function() {
-        return Math.floor(10000 + Math.random() * 90000);
-      },
+      default: function () {
+        return Math.floor(1000000000 + Math.random() * 9000000000);
+      }
     },
     email: {
       type: String,
@@ -39,7 +43,15 @@ const userSchema = new Schema(
     },
     img: {
       type: String
-    }
+    },
+    Admin: {
+      type: Boolean,
+      default: false
+    },
+    myCreated: [{
+      type: Schema.ObjectId,
+      ref: 'Product'
+    }],
   },
   {
     timestamps: false,
@@ -61,5 +73,18 @@ userSchema.methods.encryptPassword = async function () {
 userSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password)
 };
+
+userSchema.methods.restore = function() {
+  this.deleted = false;
+  return this.save();
+}
+userSchema.methods.adminUser = function() {
+  this.Admin = true;
+  return this.save()
+}
+userSchema.methods.adminStop = function() {
+  this.Admin = false;
+  return this.save()
+}
 
 module.exports = model("User", userSchema);

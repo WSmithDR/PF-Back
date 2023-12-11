@@ -1,4 +1,4 @@
-const Product = require("../../models/Product"); 
+const Product = require("../../models/Product");
 
 const getAllProducts = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
@@ -24,7 +24,7 @@ const getAllProducts = async (req, res, next) => {
     console.log("Filtrando por sale sin descuento");
     whereConditions.sales = 0;
   }
-  
+
   try {
     const sort = {};
     if (price === "highest") {
@@ -43,7 +43,7 @@ const getAllProducts = async (req, res, next) => {
     const products = await Product.find(whereConditions)
       .sort(sort)
       .limit(limit)
-      .skip(startIndex);
+      .skip(startIndex)
 
     results.results = products;
     res.paginatedResults = results;

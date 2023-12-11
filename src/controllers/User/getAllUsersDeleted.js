@@ -1,11 +1,12 @@
 const User = require("../../models/User");
 
-const getAllUsers = async (req, res, next) => {
+const getAllUsersDeleted = async (req, res, next) => {
   try {
+    console.log('estoy llevando los borrados')
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
+    const limit = parseInt(req.query.limit) || 15;
     const startIndex = (page - 1) * limit;
-    const whereConditions = { deleted: false };
+    const whereConditions = { deleted: true };
     const count = await User.countDocuments(whereConditions);
     const results = {
       info: {
@@ -25,4 +26,4 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-module.exports = getAllUsers;
+module.exports = getAllUsersDeleted;

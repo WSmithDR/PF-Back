@@ -1,14 +1,56 @@
-const Product = require('../../models/Product');
+const Product = require("../../models/Product");
 
-const getAllProductsDeleted = async () => {
+const getAllProductsDeleted = async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 15;
+  const startIndex = (page - 1) * limit;
+  const results = {};
+
+  const { brand, sale, price, category, quantity } = req.query;
+  const whereConditions = {};
+
+  if (category) {
+    whereConditions.category = new RegExp(category, 'i');
+  }
+
+  whereConditions.deleted = true;
+
+  if (sale === "1") {
+    console.log("Filtrando por sale con descuento");
+    whereConditions.sales = {
+      $gt: 0,
+    };
+  } else if (sale === "0") {
+    console.log("Filtrando por sale sin descuento");
+    whereConditions.sales = 0;
+  }
+
   try {
-    const deletedProducts = await Product.find({ deleted: true });
+    const sort = {};
+    if (price === "highest") {
+      sort.price = -1;
+    } else if (price === "lowest") {
+      sort.price = 1;
+    }
 
-    return deletedProducts;
-  } catch (error) {
-    console.error('Error fetching deleted products:', error.message);
-    throw new Error('Unable to fetch deleted products.');
-  };
+    const count = await Product.countDocuments(whereConditions);
+    results.info = {
+      page: page,
+      limit: limit,
+      total: count,
+    };
+
+    const products = await Product.find(whereConditions)
+      .sort(sort)
+      .limit(limit)
+      .skip(startIndex)
+
+    results.results = products;
+    res.paginatedResults = results;
+    next();
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
 };
 
 module.exports = getAllProductsDeleted;

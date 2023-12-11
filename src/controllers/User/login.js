@@ -28,7 +28,6 @@ const login = async (email, password) => {
     const data = {
       name: user.name,
       img: user.img,
-      message: 'Inicio de sesión exitoso'
     };
 
     return ({ access: true, accessToken, refreshToken, data });

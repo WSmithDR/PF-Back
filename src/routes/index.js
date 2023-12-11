@@ -7,7 +7,6 @@ const routerAdmin = require("./routerAdmin");
 const routerReview = require("./routerReview");
 const routerPurchase = require("./routerPurchase");
 
-
 router.use('/user', routerUser);
 router.use('/product', routerProduct);
 router.use('/admin', routerAdmin);

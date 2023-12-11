@@ -30,7 +30,6 @@ const authenticateWithGoogle = async (token) => {
       const data = {
         name: user.name,
         img: picture,
-        message: 'Usuario creado con éxito!',
       };
 
       return { access: true, accessToken, refreshToken, data };
