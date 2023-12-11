@@ -148,10 +148,7 @@ router.get("/mycreated/:id", async (req, res) => {
 router.put("/:id", upload, verifyToken, async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
-  const admin = req.body.admin
   let img;
-
-  console.log(admin);
 
   if (req.file && req.file.buffer) {
     try {
@@ -164,7 +161,7 @@ router.put("/:id", upload, verifyToken, async (req, res) => {
   }
 
   try {
-    const updatedUser = await putUser(id, updateData, img, admin);
+    const updatedUser = await putUser(id, updateData, img);
     return res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error);
