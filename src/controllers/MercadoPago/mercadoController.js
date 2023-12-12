@@ -53,8 +53,8 @@ const placeOrder = async (req, res) => {
         items: items,
         back_urls: {
           failure: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/home",
-          pending: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/purchase/pending",
-          success: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/purchase/succes",
+          pending: "https://pfback1-q5aoyanf.b4a.run//purchase/pending",
+          success: "https://pfback1-q5aoyanf.b4a.run/purchase/succes",
         },
         auto_return: "approved",
       },
