@@ -52,9 +52,9 @@ const placeOrder = async (req, res) => {
         external_reference: {userId: userId, productIds: productIds},
         items: items,
         back_urls: {
-          failure: "https://pfback1-q5aoyanf.b4a.run",
-          pending: "https://pfback1-q5aoyanf.b4a.run/purchase/pending",
-          success: "https://pfback1-q5aoyanf.b4a.run/purchase/succes",
+          failure: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/home",
+          pending: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/purchase/pending",
+          success: "https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/purchase/succes",
         },
         auto_return: "approved",
       },
@@ -102,7 +102,7 @@ const successfulPurchase = async (req, res) => {
       text: "Te invitamos a seguir comprando",
     });
 
-    res.redirect('https://master--elictronic.netlify.app/home');
+    res.redirect('https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/home');
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
