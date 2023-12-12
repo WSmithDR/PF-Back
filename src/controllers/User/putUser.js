@@ -1,6 +1,6 @@
 const User = require('../../models/User');
 
-const putUser = async (id, updateData, img, admin) => {
+const putUser = async (id, updateData, img) => {
   try {
     const updatedUser = await User.findById(id);
 
@@ -39,10 +39,6 @@ const putUser = async (id, updateData, img, admin) => {
 
     if (updateData.password) {
       updatedUser.password = await updatedUser.encryptPassword(updateData.password);
-    }
-
-    if (admin && updatedUser.Admin !== admin) {
-      updatedUser.Admin = admin;
     }
 
     updatedUser.save();
