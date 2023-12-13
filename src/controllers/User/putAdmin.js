@@ -8,12 +8,12 @@ const toggleAdmin = async (id) => {
       throw new Error("Usuario no encontrado.");
     }
 
-    if (user.Admin === undefined) {
+    if (user.Admin === null) {
       user.Admin = false;
     } else if (user.Admin === true) {
-      user.Admin = false;
+      await user.adminStop();
     } else if (user.Admin === false) {
-      user.Admin = true;
+      await user.adminUser();
     };
 
     await user.save();
@@ -27,3 +27,4 @@ const toggleAdmin = async (id) => {
 };
 
 module.exports =  toggleAdmin
+
