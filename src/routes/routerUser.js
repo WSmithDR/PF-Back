@@ -20,6 +20,7 @@ const deleteUser = require("../controllers/User/deleteUser");
 const restoreUser = require("../controllers/User/restoreUser");
 const getAllUsersDeleted = require("../controllers/User/getAllUsersDeleted")
 const getAdminCreateProducts = require("../controllers/User/getAdminCreateProducts");
+const toggleAdmin = require("../controllers/User/putAdmin");
 
 // REFRESH TOKENS
 router.post("/refresh", refreshTokens, (req, res) => {
@@ -86,7 +87,6 @@ router.post("/login", async (req, res) => {
 router.post("/messages", async (req, res) => {
   try {
     const { name, email, message } = req.body;
-console.log(req.body);
     const newMessage = await postMessage({ name, email, message });
 
     return res.status(200).json(newMessage);
@@ -99,14 +99,24 @@ console.log(req.body);
 
 
 //GET
-router.get("/", getAllUsers, (req, res) => {
-  
-  return res.status(200).json(res.paginatedResults);
+router.get("/", async (req, res) => {
+  try {
+    const data = await getAllUsers();
+
+    return res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  };
 });
 
-router.get("/deleted", getAllUsersDeleted, (req, res) => {
-  
-  return res.status(200).json(res.paginatedResults);
+router.get("/deleted", async (req, res) => {
+  try {
+    const data = await getAllUsersDeleted();
+
+    return res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 router.get('/verify/:userId', async (req, res) => {
@@ -193,5 +203,16 @@ router.put("/restore/:id", async (req, res) => {
   };
 });
 
+router.put("/admin/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await toggleAdmin(id);
+
+    return res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  };
+});
 
 module.exports = router;
