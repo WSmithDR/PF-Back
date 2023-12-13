@@ -2,7 +2,7 @@ const User = require("../../models/User");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find()
+    const users = await User.find({ deleted: false })
     
     if (!users) {
       throw new Error("Usuarios no encontrados");
