@@ -2,7 +2,6 @@ const User = require('../../models/User');
 
 const deleteUser = async (id) => {
   try {
-    console.log(`estoy borrando al usuario${id}`)
     const user = await User.findById(id);
 
     if (!user) {
