@@ -102,7 +102,7 @@ const successfulPurchase = async (req, res) => {
       text: "Te invitamos a seguir comprando",
     });
 
-    res.redirect('https://pf-front-git-develop-wagners-projects-30ac3c84.vercel.app/home');
+    res.redirect('https://elitronic.vercel.app/home');
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

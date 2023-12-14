@@ -7,7 +7,6 @@ const getProductReview = require('../controllers/Review/getProductReviews')
 
 router.get("/:id", async(req, res) => {
   const {id} = req.params;
-  console.log("voy en la ruta a buscar el review")
   try {
     const reviews = await getProductReview(id);
     return res.status(200).json(reviews);
