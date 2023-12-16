@@ -4,24 +4,34 @@ const reviewsSchema = new Schema(
   {
     comment: {
       type: String,
-      unique: false,
       required: true,
     },
-    userId: [{
+    userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: false,
-      unique: false
-    }],
-    productId: [{
+      required: true,
+    },
+    productId: {
       type: Schema.Types.ObjectId,
       ref: 'Product',
-      required: false,
-      unique: false
-    }]
+      required: true,
+    },
+    replies: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        replyComment: {
+          type: String,
+          required: true,
+        },
+      }
+    ]
   },
   {
-    timestamps: false,
+    timestamps: true,
     versionKey: false
   }
 );

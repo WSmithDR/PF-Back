@@ -1,17 +1,21 @@
 const Review = require('../../models/Review');
+const User = require('../../models/User');
 
 const getProductReview = async (productId) => {
   try {
-    const reviews = Review.find({productId});
+    const reviews = await Review.find({ productId })
+      .populate('userId')
+      .exec();
 
     if (!reviews || reviews.length === 0) {
-      throw new Error("Reviews not found.");
-    };
+      throw new Error("Sin comentarios.");
+    }
 
     return reviews;
   } catch (error) {
-    console.error('Error fetching reviews:', error.message);
-    throw new Error('Unable to fetch review.');
+    console.error(error);
+
+    throw new Error(error.message);
   }
 };
 
