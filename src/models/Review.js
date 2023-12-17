@@ -16,19 +16,6 @@ const reviewsSchema = new Schema(
       ref: 'Product',
       required: true,
     },
-    replies: [
-      {
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
-        },
-        replyComment: {
-          type: String,
-          required: true,
-        },
-      }
-    ]
   },
   {
     timestamps: true,

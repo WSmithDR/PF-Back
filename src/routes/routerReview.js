@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 
 //Middlewares
-const verify = require("../middlewares/Tokens/verifyTokens");
+const verifyTokens = require("../middlewares/Tokens/verifyTokens");
 
 //Controllers
 const postReview = require('../controllers/Review/postReview');

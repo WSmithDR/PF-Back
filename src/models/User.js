@@ -52,9 +52,17 @@ const userSchema = new Schema(
       type: Schema.ObjectId,
       ref: 'Product'
     }],
+    likedReviews: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Review'
+    }],
+    dislikedReviews: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Review'
+    }],
   },
   {
-    timestamps: false,
+    timestamps: true,
     versionKey: false
   }
 );
